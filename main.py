@@ -18,13 +18,13 @@ def check_file_danger(file_path: str) -> tuple[bool, bool]:
         response = requests.post(url, headers=headers,files=files)
     
     if response.status_code != 200:
-        raise Exception(f"uploading file {file_path} to virus total was unsuccessful")
+        raise Exception(f"uploading file {file_path} to virus total was unsuccessful\n{response.text}")
 
     analysis_link = response.json()["data"]["links"]["self"]
     analysis_response = requests.get(analysis_link, headers=headers)
 
     if analysis_response.status_code != 200:
-        raise Exception("viewing virus total results was unsuccessful")
+        raise Exception(f"viewing virus total results for {file_path} was unsuccessful\n{response.text}")
     
     analysis_data = analysis_response.json()["data"]["attributes"]["stats"]
 
